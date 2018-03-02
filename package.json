@@ -13,6 +13,9 @@
     "axios": "^0.18.0",
     "create-keyframe-animation": "0.1.0",
     "cube-ui": "1.5.0",
+    "good-storage": "1.0.1",
+    "js-base64": "2.4.3",
+    "jsonp": "0.2.1",
     "lyric-parser": "1.0.1",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
@@ -23,6 +26,7 @@
     "axios-mock-adapter": "^1.10.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-modules": "^0.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -52,6 +56,7 @@
     "semver": "^5.4.1",
     "shelljs": "^0.7.8",
     "url-loader": "^0.6.2",
+    "vue-lazyload": "1.2.1",
     "vue-loader": "^13.6.1",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.13",
@@ -59,8 +64,7 @@
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-middleware": "^2.0.3",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-merge": "^4.1.1",
-    "babel-plugin-transform-modules": "^0.1.0"
+    "webpack-merge": "^4.1.1"
   },
   "engines": {
     "node": ">= 4.0.0",

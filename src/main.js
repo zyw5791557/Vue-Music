@@ -14,8 +14,13 @@ Vue.use(Scroll);
 Vue.use(Slide);
 Vue.use(IndexList);
 
-// LocalStorage 封装
-import { setLocalStorage, getLocalStorage } from './common/js/util.js';
+// vue-lazyload
+import VueLazyload from 'vue-lazyload'
+
+// or with options
+Vue.use(VueLazyload, {
+  loading: '/static/images/lazyload.png',
+});
 
 // api
 import api from './api/index';
