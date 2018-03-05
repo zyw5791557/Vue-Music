@@ -1,5 +1,6 @@
 <script>
 export default {
+    name: 'Loading',
     props: {
         title: {
             type: String,

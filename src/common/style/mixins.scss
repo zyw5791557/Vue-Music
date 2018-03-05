@@ -1,0 +1,13 @@
+@import './vars.scss';
+
+
+@mixin bg-image ($photoName) {
+    background-image: url('/static/images/' + $photoName + '.png');
+}
+
+
+@mixin no-wrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

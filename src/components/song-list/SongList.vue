@@ -52,6 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../common/style/vars.scss";
+@import "../../common/style/mixins.scss";
 .song-list {
     .item {
         display: flex;
@@ -69,6 +70,15 @@ export default {
                 width: 25px;
                 height: 24px;
                 background-size: 25px 24px;
+                &.icon0 {
+                    @include bg-image('first');
+                }
+                &.icon1 {
+                    @include bg-image('second');
+                }
+                &.icon2 {
+                    @include bg-image('three');
+                }
             }
             .text {
                 color: $color-theme;
@@ -80,10 +90,12 @@ export default {
             line-height: 20px;
             overflow: hidden;
             .name {
+                @include no-wrap();
                 color: $color-text;
             }
             .desc {
                 margin-top: 4px;
+                @include no-wrap();
                 color: $color-text-d;
             }
         }

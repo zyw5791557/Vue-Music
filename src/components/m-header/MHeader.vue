@@ -1,9 +1,6 @@
 <script>
 export default {
-  data() {
-    return {};
-  },
-  methods: {}
+    name: 'MHeader'
 };
 </script>
 

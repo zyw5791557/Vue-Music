@@ -1,8 +1,10 @@
 <script>
+import Scroll from "@/components/scroll/Scroll";
+import Loading from "@/components/loading/Loading";
 import NoResult from "@/components/no-result/NoResult";
 import { search } from "@/api/search";
 import { ERR_OK } from "@/api/config";
-import { createSong, isValidMusic } from "@/common/js/song";
+import { createSong, isValidMusic, processSongsUrl } from "@/common/js/song";
 import { mapMutations, mapActions } from "vuex";
 import Singer from "@/common/js/singer";
 
@@ -11,6 +13,11 @@ const perpage = 20;
 
 export default {
     name: 'Suggest',
+    components: {
+        Scroll,
+        Loading,
+        NoResult
+    },
     props: {
         showSinger: {
             type: Boolean,
@@ -24,14 +31,10 @@ export default {
     data() {
         return {
             page: 1,
+            pullup: true,
+            beforeScroll: true,
             hasMore: true,
-            result: [],
-            scrollOptions: {
-                pullUpLoad: {
-                    threshold: 0,
-                    txt: ""
-                }
-            }
+            result: []
         };
     },
     methods: {
@@ -44,29 +47,29 @@ export default {
             this.$refs.suggest.scrollTo(0, 0);
             search(this.query, this.page, this.showSinger, perpage).then(res => {
                 if (res.code === ERR_OK) {
-                    this.result = this._genResult(res.data);
-                    this._checkMore(res.data);
+                this._genResult(res.data).then(result => {
+                    this.result = result;
+                });
+                this._checkMore(res.data);
                 }
             });
         },
         searchMore() {
             if (!this.hasMore) {
-                this.$refs.suggest.forceUpdate();
                 return;
             }
             this.page++;
-            search(this.query, this.page, this.showSinger, perpage)
-                .then(res => {
+            search(this.query, this.page, this.showSinger, perpage).then(res => {
                 if (res.code === ERR_OK) {
-                    this.result = this.result.concat(this._genResult(res.data));
-                    this._checkMore(res.data);
-                } else {
-                    this.$refs.suggest.forceUpdate();
-                }
-                })
-                .catch(() => {
-                    this.$refs.suggest.forceUpdate();
+                this._genResult(res.data).then(result => {
+                    this.result = this.result.concat(result);
                 });
+                this._checkMore(res.data);
+                }
+            });
+        },
+        listScroll() {
+            this.$emit("listScroll");
         },
         selectItem(item) {
             if (item.type === TYPE_SINGER) {
@@ -102,10 +105,12 @@ export default {
             if (data.zhida && data.zhida.singerid && this.page === 1) {
                 ret.push({ ...data.zhida, ...{ type: TYPE_SINGER } });
             }
-            if (data.song) {
-                ret = ret.concat(this._normalizeSongs(data.song.list));
-            }
-            return ret;
+            return processSongsUrl(this._normalizeSongs(data.song.list)).then(
+                songs => {
+                ret = ret.concat(songs);
+                return ret;
+                }
+            );
         },
         _normalizeSongs(list) {
             let ret = [];
@@ -137,9 +142,6 @@ export default {
             }
             this.search(newQuery);
         }
-    },
-    components: {
-        NoResult
     }
 };
 </script>
@@ -149,7 +151,6 @@ export default {
         <cube-scroll 
             ref="suggest"
             :data="result"
-            :options="scrollOptions"
             @pulling-up="searchMore">
             <ul class="suggest-list">
                 <li @click="selectItem(item)" class="suggest-item" v-for="item in result">
@@ -171,38 +172,37 @@ export default {
 <style lang="scss" scoped>
 @import "../../common/style/vars.scss";
 .suggest {
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    .suggest-list {
-        padding: 0 30px;
-        .suggest-item {
-            display: flex;
-            align-items: center;
-            padding-bottom: 20px;
-        }
-        .icon {
-            flex: 0 0 30px;
-            width: 30px;
-            [class^="icon-"] {
-                font-size: 14px;
-                color: $color-text-d;
-            }
-        }
-        .name {
-            flex: 1;
-            font-size: $font-size-medium;
-            color: $color-text-d;
-            overflow: hidden;
-        }
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  .suggest-list {
+    padding: 0 30px;
+    .suggest-item {
+      display: flex;
+      align-items: center;
+      padding-bottom: 20px;
     }
-    .no-result-wrapper {
-        position: absolute;
-        top: 50%;
-        z-index: 10;
-        width: 100%;
-        transform: translateY(-50%);
+    .icon {
+      flex: 0 0 30px;
+      width: 30px;
+      [class^="icon-"] {
+        font-size: 14px;
+        color: $color-text-d;
+      }
     }
+    .name {
+      flex: 1;
+      font-size: $font-size-medium;
+      color: $color-text-d;
+      overflow: hidden;
+    }
+  }
+  .no-result-wrapper {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    width: 100%;
+    transform: translateY(-50%);
+  }
 }
-
 </style>

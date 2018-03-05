@@ -14,7 +14,7 @@ import MHeader from './components/m-header/MHeader';
 import MTab from './components/m-tab/MTab';
 import Player from './components/player/Player';
 export default {
-	name: 'app',
+	name: 'App',
 	components: {
 		MHeader,
 		MTab,
