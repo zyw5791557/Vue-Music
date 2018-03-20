@@ -79,7 +79,7 @@ let routes = [
 ];
 
 const router = new VueRouter({
-	mode: 'history',       // 需要后台配置支持
+	mode: 'hash',       
 	routes
 })
 
