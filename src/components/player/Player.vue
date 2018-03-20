@@ -420,6 +420,14 @@ export default {
                 }, 20);
             }
         }
+    },
+    mounted () {
+        // 解决移动端播放问题
+        document.body.ontouchstart = () => {
+            const music = this.$refs.audio;
+            music.play();
+            document.body.ontouchstart = null;
+        }
     }
 };
 </script>

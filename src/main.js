@@ -24,7 +24,12 @@ Vue.use(VueLazyload, {
 
 // api
 import api from './api/index';
-Vue.use(api)
+Vue.use(api);
+
+// vConsole
+// import VConsole from 'vconsole';
+
+// const vConsole = new VConsole();
 
 
 // 全局 axiosBaseURL
